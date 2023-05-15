@@ -10,10 +10,15 @@ class Item:
         assert quantity >= 0, f"Quantity {quantity} is not greater than or equal to zero!"
 
         self.__name = name
-        self.price = price
+        self.__price = price
         self.quantity = quantity
 
         Item.all.append(self)
+
+    @property
+    def price(self):
+        return self.__price
+
 
     @property
     def name(self):
@@ -27,10 +32,13 @@ class Item:
             self.__name = value
 
     def calculate_total_price(self):
-        return self.price * self.quantity
+        return self.__price * self.quantity
 
     def apply_discount(self):
-        self.price = self.price * self.pay_rate
+        self.__price = self.__price * self.pay_rate
+
+    def apply_increment(self, increment_value):
+        self.__price = self.__price * increment_value
 
     @classmethod
     def instantiate_from_class(cls):
@@ -39,7 +47,7 @@ class Item:
             items = list(reader)
 
         for item in items:
-            Item(name=item.get('name'), price=item.get('price'), quantity=item.get('price'))
+            Item(name=item.get('name'), price=item.get('__price'), quantity=item.get('quantity'))
 
     @staticmethod
     def is_integer(num):
@@ -51,4 +59,4 @@ class Item:
             return False
 
     def __repr__(self):
-        return f"{Item.__class__.__name__}('{self.__name}', {self.price}, {self.quantity})"
+        return f"{Item.__class__.__name__}('{self.__name}', {self.__price}, {self.quantity})"
